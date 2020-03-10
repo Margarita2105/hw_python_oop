@@ -5,8 +5,6 @@ in_seven_days = dt.date.today() - dt.timedelta(7)
 
 
 class Calculator:
-    gts_amount = 0
-    ws_amount = 0
 
     def __init__(self, limit):
         self.limit = limit
@@ -16,17 +14,19 @@ class Calculator:
         self.records.append(record)
 
     def get_today_stats(self):
+        gts_amount = 0
         for rec in self.records:
             if rec.date == dt.date.today():
-                self.gts_amount += rec.amount
-        return self.gts_amount
+                gts_amount += rec.amount
+        return gts_amount
 
     def get_week_stats(self):
+        ws_amount = 0
         in_seven_days = dt.date.today() - dt.timedelta(7)
         for rec in self.records:
             if rec.date >= in_seven_days:
-                self.ws_amount += rec.amount
-        return self.ws_amount
+                ws_amount += rec.amount
+        return ws_amount
 
 
 class CaloriesCalculator(Calculator):
@@ -76,6 +76,7 @@ class CashCalculator(Calculator):
 
 
 class Record:
+     
     def __init__(self, amount, comment, date=dt.date.today()):
         self.amount = amount
         self.comment = comment
@@ -84,7 +85,9 @@ class Record:
             dn = dt.datetime.strptime(date, "%d.%m.%Y")
             self.date = dn.date()
 
+
 cash_calculator = CashCalculator(1000)
+
 # дата в параметрах не указана,
 # так что по умолчанию к записи должна автоматически добавиться сегодняшняя дата
 cash_calculator.add_record(Record(amount=145, comment="кофе"))
@@ -92,7 +95,10 @@ cash_calculator.add_record(Record(amount=145, comment="кофе"))
 cash_calculator.add_record(Record(amount=300, comment="Серёге за обед"))
 # а тут пользователь указал дату, сохраняем её
 cash_calculator.add_record(Record(amount=3000, comment="бар в Танин др", date="08.11.2019"))
+
 print(cash_calculator.get_today_cash_remained("rub"))
+
+
 c = Calculator(1000)
 c.add_record(Record(145, 'fg'))
 c.add_record(Record(300, 'fg'))
